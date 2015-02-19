@@ -23,5 +23,5 @@
 
 ### Who do I talk to? ###
 
-* Rahul Shelke @srahul07
-* My Cute Office @mycuteoffice 
+* @srahul07
+* @mycuteoffice 
