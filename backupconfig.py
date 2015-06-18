@@ -27,10 +27,8 @@ class BackupConfig(object):
         '''
         multi = False
         print "checking for backup names file."
-        if os.path.exists(listfile):
-            listfileObj = open(listfile)
-            if is_non_zero_file(listfileObj):
-                multi = True
+        if is_non_zero_file(listfile):
+            multi = True
             print "List file found..."
             print "Starting backup listed in " + listfile
         else:
