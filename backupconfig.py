@@ -2,6 +2,7 @@ __author__ = 'rahul'
 
 import os
 import time
+from util import is_non_zero_file
 
 
 class BackupConfig(object):
@@ -27,12 +28,13 @@ class BackupConfig(object):
         multi = False
         print "checking for backup names file."
         if os.path.exists(listfile):
-            file1 = open(listfile)
-            multi = True
+            listfileObj = open(listfile)
+            if is_non_zero_file(listfileObj):
+                multi = True
             print "List file found..."
             print "Starting backup listed in " + listfile
         else:
+            multi = False
             print "List file not found..."
             print "Starting backup of " + default
-            multi = False
         return multi
