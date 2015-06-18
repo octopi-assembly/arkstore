@@ -9,17 +9,27 @@ CURRENT_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 FILE_SOURCE_DIRECTORY = ""
 FILE_DESTINATION_DIRECTORY = ""
 
-DB_LIST_SOURCE_FILE = os.path.join(CURRENT_DIRECTORY, "db_list.txt")
-DB_DESTINATION_DIRECTORY = os.path.join(CURRENT_DIRECTORY, "backup", "db")
+RDB_LIST_SOURCE_FILE = os.path.join(CURRENT_DIRECTORY, "db_list.txt")
+RDB_DESTINATION_DIRECTORY = os.path.join(CURRENT_DIRECTORY, "backup", "rdb")
 
 # MySql configurations
-DB_HOST = "localhost"
-DB_PORT = "3306"
-DB_USER = "root"
-DB_PASSWORD = "root"
-DB_DATABASE = "mco"
-# MySql commands
-DB_URI = "mysql://%s:%s@%s/%s" % (DB_USER, DB_PASSWORD, DB_HOST, DB_DATABASE)
+RDB_HOST = "localhost"
+RDB_PORT = "3306"
+RDB_USER = "root"
+RDB_PASSWORD = "root"
+RDB_DEFAULT_DB = "mco"
+RDB_IGNORE = ["information_schema", "performance_schema", "mysql"]
+
+NDB_LIST_SOURCE_FILE = os.path.join(CURRENT_DIRECTORY, "db_list.txt")
+NDB_DESTINATION_DIRECTORY = os.path.join(CURRENT_DIRECTORY, "backup", "ndb")
+
+# Mongo configurations
+NDB_HOST = "localhost"
+NDB_PORT = "3306"
+NDB_USER = "root"
+NDB_PASSWORD = "root"
+NDB_DATABASE = "mco"
+NDB_IGNORE = ["information_schema", "performance_schema", "mysql"]
 
 # Mail server
 EMAIL_SERVER = "localhost"

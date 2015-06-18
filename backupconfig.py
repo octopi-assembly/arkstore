@@ -1,0 +1,38 @@
+__author__ = 'rahul'
+
+import os
+import time
+
+
+class BackupConfig(object):
+
+    def __init__(self):
+        pass
+
+    def getDestination(self, destinationdir):
+        ''' Getting current datetime to create separate backup folder like "12012013-071334".
+        '''
+        filestamp = time.strftime('%m%d%Y-%H%M%S')
+        return os.path.join(destinationdir, filestamp)
+
+    def createPath(self, path):
+        ''' Check if backup folder already exists or not. If not will create it.
+        '''
+        if not os.path.exists(path):
+            os.makedirs(path)
+
+    def isMultiBackup(self, listfile, default):
+        ''' Code for checking if you want to take single backup or assigned multiple backups in list file.
+        '''
+        multi = False
+        print "checking for backup names file."
+        if os.path.exists(listfile):
+            file1 = open(listfile)
+            multi = True
+            print "List file found..."
+            print "Starting backup listed in " + listfile
+        else:
+            print "List file not found..."
+            print "Starting backup of " + default
+            multi = False
+        return multi
