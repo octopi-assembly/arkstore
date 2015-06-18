@@ -30,7 +30,7 @@ MAIL_SERVER = "localhost"
 MAIL_PORT = 25
 MAIL_USE_TLS = False
 MAIL_USE_SSL = False
-MAIL_USERNAME = "surgeonsquests"
+MAIL_USERNAME = "mycuteoffice"
 MAIL_PASSWORD = ''
 # Sendgrid Client Credentials
 SENDGRID_USER = "hello@mycuteoffice.com"
