@@ -8,16 +8,16 @@ class MysqlCmd(object):
 
     @classmethod
     def getDump(self, zipstatus):
-        cmd = "mysqldump -u%s -p%s -h %s -e --opt -c %s > %s/%s.sql"
+        cmd = "mysqldump -u %s -p%s -h %s -e --opt -c %s > %s/%s.sql"
         if zipstatus:
-            cmd = "mysqldump -u%s -p%s -h %s -e --opt -c %s | gzip -c > %s/%s.sql.gz"
+            cmd = "mysqldump -u %s -p%s -h %s -e --opt -c %s | gzip -c > %s/%s.sql.gz"
         return cmd
 
     @classmethod
     def getDBStrcture(self, zipstatus):
-        cmd = "mysqldump -u%s -p%s -h %s -e -d --opt -c %s > %s/%s.sql"
+        cmd = "mysqldump -u %s -p%s -h %s -e -d --opt -c %s > %s/%s.sql"
         if zipstatus:
-            cmd = "mysqldump -u%s -p%s -h %s -e -d --opt -c %s | gzip -c > %s/%s.sql.gz"
+            cmd = "mysqldump -u %s -p%s -h %s -e -d --opt -c %s | gzip -c > %s/%s.sql.gz"
         return cmd
 
     @classmethod
@@ -26,4 +26,3 @@ class MysqlCmd(object):
         if zipstatus:
             cmd = "mysql -u %s -p%s -h %s --silent -N -e 'show databases' | gzip -c > %s.gz"
         return cmd
-

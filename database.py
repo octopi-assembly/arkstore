@@ -47,13 +47,23 @@ def backup_database():
     print "Your backups has been created in '" + todaybackuppath + "' directory"
 
 
-print "Creating database list from command and storing in file."
-create_db_list_from_command(MysqlCmd.getDatabaseList(settings.ZIP_STATUS))
+db_list_created = False
+if settings.RDB_LIST_LOAD_FROM_DB:
+    print "Creating database list from command and storing in file."
+    create_db_list_from_command(MysqlCmd.getDatabaseList(settings.ZIP_STATUS))
+    db_list_created = True
+else:
+    # load from file or from default database from configurations
+    ## NOTE: check configurations file for file path
+    pass
+
 print "Database backup started"
 backup_database()
-print "Deleting database list file"
-if settings.ZIP_STATUS:
-    os.remove(settings.RDB_LIST_SOURCE_FILE + ".gz")
-else:
-    os.remove(settings.RDB_LIST_SOURCE_FILE)
+
+if db_list_created:
+    print "Deleting database list file"
+    if settings.ZIP_STATUS:
+        os.remove(settings.RDB_LIST_SOURCE_FILE + ".gz")
+    else:
+        os.remove(settings.RDB_LIST_SOURCE_FILE)
 print "Backup script completed"
