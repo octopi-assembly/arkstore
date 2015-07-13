@@ -1,7 +1,7 @@
 import os
 import gzip
 import config as settings
-from backupconfig import BackupConfig
+from backuputil import BackupUtil
 from command import MysqlCmd
 
 
@@ -20,7 +20,7 @@ def get_db_list_from_file(sourcefile):
 
 
 def backup_database():
-    backup = BackupConfig()
+    backup = BackupUtil()
     todaybackuppath = backup.getDestination(settings.RDB_DESTINATION_DIRECTORY)
     backup.createPath(todaybackuppath)
 

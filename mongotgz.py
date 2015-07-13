@@ -14,7 +14,8 @@ import sys
 import tarfile
 
 from pymongo import MongoClient
-from backupconfig import BackupConfig
+
+from backuputil import BackupUtil
 import config as settings
 import mongoconfig as config
 
@@ -56,8 +57,7 @@ def dump_collection(target, collection, temp_dir):
 def zip_db_dump(dbname, temp_dir):
     '''Zip database dump folder.'''
     source_zip = os.path.join(temp_dir, dbname)
-    backupconfig = BackupConfig()
-    date_stamp = backupconfig.getDestination()
+    date_stamp = BackupUtil.getDestination()
     zip_name = '{dbname}.{date}.tar.gz'.format(dbname=dbname, date=date_stamp)
     target_zip = os.path.join(temp_dir, zip_name)
     with tarfile.open(target_zip, 'w:gz') as mytar:
