@@ -67,8 +67,7 @@ class MySQL(DbBackup):
         super(MySQL, self).__init__(**kwargs)
 
     def get_target_collections(self, target):
-        '''Get list of tables except cache tables
-        and tables which configured as ignored.
+        '''Get list of tables except tables which configured as ignored.
         '''
         dbname = target['database']
         ignores = target['ignore']
