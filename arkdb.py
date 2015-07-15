@@ -5,15 +5,15 @@ import subprocess
 import MySQLdb as MariaDB
 from pymongo import MongoClient
 
-from backup import Backup, STRUCTURE
-from backuputil import BackupUtil
+from ark import Ark, STRUCTURE
+from arkutil import ArkUtil
 
 
-class MySQLBackup(Backup):
+class MySQLArk(Ark):
     '''MySQL / MariaDB backup class
     '''
     def __init__(self, **kwargs):
-        super(MySQLBackup, self).__init__(**kwargs)
+        super(MySQLArk, self).__init__(**kwargs)
 
     def get_target_collections(self, target):
         '''Get list of tables except tables which configured as ignored.
@@ -47,7 +47,7 @@ class MySQLBackup(Backup):
             '-p' + password
         ]
         path = os.path.join(temp_dir, dbname)
-        BackupUtil.createPath(path)
+        ArkUtil.createPath(path)
         f = open(os.path.join(path, collection), 'wb', 0)
         subprocess.call(args, stdout=f)
         f.close()
@@ -69,17 +69,17 @@ class MySQLBackup(Backup):
             '--no-data'
         ]
         path = os.path.join(temp_dir, dbname, STRUCTURE)
-        BackupUtil.createPath(path)
+        ArkUtil.createPath(path)
         f = open(os.path.join(path, collection), 'wb', 0)
         subprocess.call(args, stdout=f)
         f.close()
 
 
-class MongoBackup(Backup):
+class MongoArk(Ark):
     '''MongoDb backup class
     '''
     def __init__(self, **kwargs):
-        super(MongoBackup, self).__init__(**kwargs)
+        super(MongoArk, self).__init__(**kwargs)
 
     def get_target_collections(self, target):
         '''Get list of collections except system collections

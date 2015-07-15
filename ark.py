@@ -4,13 +4,13 @@ import shutil
 import tarfile
 
 import os
-from backuputil import BackupUtil
+from arkutil import ArkUtil
 
 
 STRUCTURE = "structure"
 
 
-class Backup(object):
+class Ark(object):
     '''Database backup class.
     '''
     def __init__(self, **kwargs):
@@ -46,7 +46,7 @@ class Backup(object):
     def write_to_output(self, dbname, dest_dir, abszipfn):
         '''Copy archive to the output and rewrite latest database archive.
         '''
-        BackupUtil.createPath(dest_dir)
+        ArkUtil.createPath(dest_dir)
         _, zipfn = os.path.split(abszipfn)
         move_to = os.path.join(dest_dir, zipfn)
         shutil.move(abszipfn, move_to)

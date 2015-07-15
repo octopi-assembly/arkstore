@@ -3,17 +3,17 @@ __author__ = 'rahul'
 import os
 import subprocess
 
-from backup import Backup
+from ark import Ark
 
 
 OPERATION = "exclude"
 
 
-class FileBackup(Backup):
+class FileArk(Ark):
     '''Backup directory structure and files
     '''
     def __init__(self, **kwargs):
-        super(FileBackup, self).__init__(**kwargs)
+        super(FileArk, self).__init__(**kwargs)
 
     def get_target_collections(self, target):
         '''Get list of files except ignore directories and file extensions.
