@@ -1,6 +1,8 @@
+*.out
+*.pyc
 .idea/
 venv/
 backup/
-*.out
-*.pyc
-*.txt
+fileconfig.py
+mysqlconfig.py
+mongoconfig.py
