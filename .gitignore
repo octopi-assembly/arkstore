@@ -1,0 +1,8 @@
+*.out
+*.pyc
+.idea/
+venv/
+backup/
+fileconfig.py
+mysqlconfig.py
+mongoconfig.py
