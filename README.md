@@ -2,7 +2,7 @@
 # arkstore
 SQL, NoSQL and file backup
 
-This backup script uses subprocess to take backup of the files.
+This backup script uses subprocess to take backup of sql, nosql and files.
 
 ### This Backup Script is to take backup of following things: ###
 
@@ -36,7 +36,6 @@ This backup script uses subprocess to take backup of the files.
 ### Who do I talk to? ###
 
 * @srahul07
-* @mycuteoffice 
 
 ### Originally written ###
 
