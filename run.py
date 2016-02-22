@@ -39,7 +39,7 @@ def arkstore(dbbackup=None, config=None, db_dump=None, db_targets=None, dest_dir
                 abszipfn = dbbackup.zip_db_dump(dbname=dbname, date_stamp=date_stamp, temp_dir=temp_dir)
                 dbbackup.write_to_output(dbname=dbname, dest_dir=dest_dir, abszipfn=abszipfn)
     except StandardError as err:
-        print  >> sys.stderr. str(err)
+        print  >> sys.stderr, str(err)
         return 1
     finally:
         if not isinstance(dbbackup, FileArk):

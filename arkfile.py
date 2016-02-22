@@ -3,7 +3,7 @@ __author__ = 'rahul'
 import os
 import subprocess
 
-from ark import Ark
+from ark import Ark, ArkUtil
 
 
 OPERATION = "exclude"
@@ -32,12 +32,14 @@ class FileArk(Ark):
         '''Dump target collection to the temporary folder.
         '''
         dbname = target['database']
+	logfilepath = os.path.join(os.getcwd(), "backup", "log")
+	ArkUtil.createPath(logfilepath)
         args = [
             db_dump,
             '-az',
             '--exclude-from', collection,
             '-q',
-            '--log-file=/var/log/backup/files.log',
+	    '--log-file={filepath}/files.log'.format(filepath=logfilepath),
             dbname + os.sep,
             temp_dir + os.sep
         ]
