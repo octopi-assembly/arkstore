@@ -2,6 +2,8 @@
 # arkstore
 SQL, NoSQL and file backup
 
+This backup script uses subprocess to take backup of the files.
+
 ### This Backup Script is to take backup of server. ###
 
 * Quick summary
