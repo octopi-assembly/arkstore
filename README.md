@@ -4,11 +4,11 @@ SQL, NoSQL and file backup
 
 This backup script uses subprocess to take backup of the files.
 
-### This Backup Script is to take backup of server. ###
+### This Backup Script is to take backup of following things: ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* SQL databases [currently supports mysql and mariadb]
+* NoSQL databases [Currently supports mongodb]
+* Files / Directories using rsync
 
 ### How do I get set up? ###
 
