@@ -10,6 +10,14 @@ This backup script uses subprocess to take backup of the files.
 * NoSQL databases [Currently supports mongodb]
 * Files / Directories using rsync
 
+
+### Pending Stuff ###
+* Backup Restore
+* Seperate structure backup for SQL
+* Adding other SQL engines like Postgre SQL, Oracle, MS SQL, IBM DB2, IBM Informix, Teradata
+* Adding other NoSQL engines like Redis, Memcached, Terrastore, Neo4j [This list may not be done]
+
+
 ### How do I get set up? ###
 
 * Summary of set up
