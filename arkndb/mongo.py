@@ -1,0 +1,37 @@
+__author__ = 'rahul'
+
+import os
+import ast
+from sh import mongo, mongodump
+
+from ark import Ark
+from arkutil import ArkUtil
+
+
+class MongoArk(Ark):
+    '''MongoDb backup class
+    '''
+    def __init__(self, **kwargs):
+        super(MongoArk, self).__init__(**kwargs)
+
+    def get_target_collections(self, target):
+        '''Get list of collections except system collections
+        and collections which configured as ignored.
+        '''
+        collection = mongo(target['database'], host=self.host, port=self.port, u=target['login'], p=target['password'],
+              eval="db.getCollectionNames()", quiet=True)
+        for list in collection:
+            collection = ast.literal_eval(list) if isinstance(list, unicode) or isinstance(list, str) else list
+
+        ignore = lambda col: col.startswith(target['ignore_startswith']) or col in target['ignore']
+        return [str(col).strip() for col in collection if not ignore(col)]
+
+    def dump_collection(self, target, collection, temp_dir):
+        '''Dump target collection to the temporary folder.
+        '''
+        path = os.path.join(temp_dir, target['database'])
+        ArkUtil.createPath(path)
+
+         # Take a dump of the database collection
+        mongodump(h=self.host, port=self.port, d=target['database'], c=collection, u=target['login'],
+                  p=target['password'], o=path)

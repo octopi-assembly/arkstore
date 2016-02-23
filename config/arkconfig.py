@@ -2,7 +2,8 @@ import os
 
 ZIP_STATUS = True
 
-CURRENT_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
+#CURRENT_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
+CURRENT_DIRECTORY = os.path.dirname(os.getcwd())
 
 FILE_SOURCE_DIRECTORY = ""
 FILE_DESTINATION_DIRECTORY = ""

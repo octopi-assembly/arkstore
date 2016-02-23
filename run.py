@@ -1,19 +1,18 @@
 __author__ = 'rahul'
 
-import sys
 import argparse
 import shutil
+import sys
 import tempfile
+
+from akrrdb.mysql import MySQLArk
+from arkfile.file import FileArk
+from arkndb.mongo import MongoArk
 from arkutil import ArkUtil
-
-from arkdb import MySQLArk, MongoArk
-from arkfile import FileArk
-import mysqlconfig
-import mongoconfig
-import fileconfig
+from config import mysqlconfig, mongoconfig, fileconfig
 
 
-def arkstore(dbbackup=None, config=None, db_dump=None, db_targets=None, dest_dir=None):
+def arkstore(dbbackup=None, config=None, db_targets=None, dest_dir=None):
     '''The entry point of the script.
     '''
     print "Backup started"
@@ -30,16 +29,16 @@ def arkstore(dbbackup=None, config=None, db_dump=None, db_targets=None, dest_dir
             target['config'] = config
             cols = dbbackup.get_target_collections(target=target)
             for col in cols:
-                dbbackup.dump_collection(db_dump=db_dump, target=target, collection=col, temp_dir=temp_dir)
+                dbbackup.dump_collection(target=target, collection=col, temp_dir=temp_dir)
                 if isinstance(dbbackup, MySQLArk):
-                    dbbackup.dump_structure(db_dump=db_dump, target=target, collection=col, temp_dir=temp_dir)
+                    dbbackup.dump_structure(target=target, collection=col, temp_dir=temp_dir)
             if not isinstance(dbbackup, FileArk):
                 dbname = target.get('database')
                 date_stamp = ArkUtil.getDestination()
                 abszipfn = dbbackup.zip_db_dump(dbname=dbname, date_stamp=date_stamp, temp_dir=temp_dir)
                 dbbackup.write_to_output(dbname=dbname, dest_dir=dest_dir, abszipfn=abszipfn)
     except StandardError as err:
-        print  >> sys.stderr. str(err)
+        print  >> sys.stderr, str(err)
         return 1
     finally:
         if not isinstance(dbbackup, FileArk):
@@ -55,14 +54,14 @@ def run(type):
     backup_type = {'mysql': MySQLArk, 'mongo': MongoArk, 'file': FileArk}
     config = {'mysql': mysqlconfig, 'mongo': mongoconfig, 'file': fileconfig}
     # get required configurations
-    db_dump = config[type].DB_DUMP
     db_targets = config[type].DB_TARGETS
     dest_dir = config[type].DB_DESTINATION_DIRECTORY
+
     # Create destination directory if it does not exist
     ArkUtil.createPath(dest_dir)
     # start backup
     dbbackup = backup_type[type](host=config[type].DB_HOST, port=config[type].DB_PORT)
-    sys.exit(arkstore(dbbackup=dbbackup, config=config[type], db_dump=db_dump, db_targets=db_targets, dest_dir=dest_dir))
+    sys.exit(arkstore(dbbackup=dbbackup, config=config[type], db_targets=db_targets, dest_dir=dest_dir))
 
 
 if __name__ == '__main__':

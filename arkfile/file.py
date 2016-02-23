@@ -1,9 +1,9 @@
 __author__ = 'rahul'
 
 import os
-import subprocess
+from sh import rsync
 
-from ark import Ark
+from ark import Ark, ArkUtil
 
 
 OPERATION = "exclude"
@@ -28,17 +28,12 @@ class FileArk(Ark):
         exclude_from.close()
         return [exclude_from.name]
 
-    def dump_collection(self, db_dump, target, collection, temp_dir):
+    def dump_collection(self, target, collection, temp_dir):
         '''Dump target collection to the temporary folder.
         '''
-        dbname = target['database']
-        args = [
-            db_dump,
-            '-az',
-            '--exclude-from', collection,
-            '-q',
-            '--log-file=/var/log/backup/files.log',
-            dbname + os.sep,
-            temp_dir + os.sep
-        ]
-        subprocess.call(args)
+        logfilepath = os.path.join(temp_dir, "backup", "log")
+        ArkUtil.createPath(logfilepath)
+
+        # Take a dump of the files collection
+        rsync(target['database'] + os.sep, temp_dir + os.sep, "-az", q=True, exclude_from=collection,
+              log_file='{filepath}/files.log'.format(filepath=logfilepath))
