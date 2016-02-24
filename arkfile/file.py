@@ -31,7 +31,7 @@ class FileArk(Ark):
     def dump_collection(self, target, collection, temp_dir):
         '''Dump target collection to the temporary folder.
         '''
-        logfilepath = os.path.join(temp_dir, "backup", "log")
+        logfilepath = os.path.join(target['config'].DB_LOG_DIRECTORY)
         ArkUtil.createPath(logfilepath)
 
         # Take a dump of the files collection
