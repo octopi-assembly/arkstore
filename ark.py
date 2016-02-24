@@ -1,5 +1,3 @@
-__author__ = 'rahul'
-
 import shutil
 import tarfile
 

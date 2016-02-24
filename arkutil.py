@@ -1,5 +1,3 @@
-__author__ = 'rahul'
-
 import os
 import time
 
@@ -31,19 +29,3 @@ class ArkUtil(object):
         ''' Check if file exist and has content or not
         '''
         return True if os.path.isfile(fpath) and os.path.getsize(fpath) > 0 else False
-
-    @classmethod
-    def isMultiBackup(cls, listfile, default):
-        ''' Code for checking if you want to take single backup or assigned multiple backups in list file.
-        '''
-        multi = False
-        print "checking for backup names file."
-        if cls.is_non_zero_file(listfile):
-            multi = True
-            print "List file found..."
-            print "Starting backup listed in " + listfile
-        else:
-            multi = False
-            print "List file not found..."
-            print "Starting backup of " + default
-        return multi

@@ -1,5 +1,3 @@
-__author__ = 'rahul'
-
 import os
 from sh import rsync
 

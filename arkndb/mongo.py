@@ -1,5 +1,3 @@
-__author__ = 'rahul'
-
 import os
 import ast
 from sh import mongo, mongodump
