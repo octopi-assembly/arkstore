@@ -5,9 +5,7 @@ import tarfile
 
 import os
 from arkutil import ArkUtil
-
-
-STRUCTURE = "structure"
+from config.arkconfig import DATA, STRUCTURE, OPERATION
 
 
 class Ark(object):
@@ -38,7 +36,7 @@ class Ark(object):
                 for fname in files:
                     absfn = os.path.join(root, fname)
                     if not root.endswith(STRUCTURE):
-                        mytar.add(absfn, arcname=os.path.join(dbname, fname))
+                        mytar.add(absfn, arcname=os.path.join(dbname, DATA, fname))
                     else:
                         mytar.add(absfn, arcname=os.path.join(dbname, STRUCTURE, fname))
         return target_zip

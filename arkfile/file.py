@@ -3,10 +3,7 @@ __author__ = 'rahul'
 import os
 from sh import rsync
 
-from ark import Ark, ArkUtil
-
-
-OPERATION = "exclude"
+from ark import Ark, ArkUtil, OPERATION
 
 
 class FileArk(Ark):
@@ -18,11 +15,13 @@ class FileArk(Ark):
     def get_target_collections(self, target):
         '''Get list of files except ignore directories and file extensions.
         '''
-        ignore = (lambda col, status: "{col}/{newline}".format(col=col, newline='\n') if status
-                    else "{col}{newline}".format(col=col, newline='\n'))
-        ignores = [ignore(col, False) for col in target['config'].DB_IGNORE]
-        ignores += [ignore(col, True) for col in target['ignore']]
-        ignores.append(target['ignore_startswith'])
+        ignore = lambda col: "{col}/{newline}".format(col=col, newline='\n')
+        ignore_startswith = lambda col: "{col}*{newline}".format(col=col, newline='\n')
+
+        ignores = [ignore(col) for col in target['config'].DB_IGNORE]
+        ignores += [ignore(col) for col in target['ignore']]
+        ignores += [ignore_startswith(col) for col in target['ignore_startswith']]
+
         exclude_from = open((target['config'].DB_LIST_SOURCE_FILE).format(operation=OPERATION), 'w')
         exclude_from.writelines(ignores)
         exclude_from.close()

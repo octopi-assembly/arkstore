@@ -2,6 +2,10 @@ import os
 
 ZIP_STATUS = True
 
+DATA = "data"
+STRUCTURE = "structure"
+OPERATION = "exclude"
+
 #CURRENT_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 CURRENT_DIRECTORY = os.path.dirname(os.getcwd())
 

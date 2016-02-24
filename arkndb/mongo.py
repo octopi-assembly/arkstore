@@ -23,7 +23,7 @@ class MongoArk(Ark):
         for list in collection:
             collection = ast.literal_eval(list) if isinstance(list, unicode) or isinstance(list, str) else list
 
-        ignore = lambda col: col.startswith(target['ignore_startswith']) or col in target['ignore']
+        ignore = lambda col: col.startswith(tuple(target['ignore_startswith'])) or col in target['ignore']
         return [str(col).strip() for col in collection if not ignore(col)]
 
     def dump_collection(self, target, collection, temp_dir):
@@ -32,6 +32,11 @@ class MongoArk(Ark):
         path = os.path.join(temp_dir, target['database'])
         ArkUtil.createPath(path)
 
+        logfilepath = os.path.join(target['config'].DB_LOG_DIRECTORY)
+        ArkUtil.createPath(logfilepath)
+
+        f = open(os.path.join(logfilepath, "mongo.log"), 'a', 0)
+
          # Take a dump of the database collection
         mongodump(h=self.host, port=self.port, d=target['database'], c=collection, u=target['login'],
-                  p=target['password'], o=path)
+                  p=target['password'], o=path, _err=f)
