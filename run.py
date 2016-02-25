@@ -1,3 +1,4 @@
+import os
 import argparse
 import shutil
 import sys
@@ -7,13 +8,14 @@ from arkrdb.mysql import MySQLArk
 from arkfile.file import FileArk
 from arkndb.mongo import MongoArk
 from arkutil import ArkUtil
+from loggerd import logger
 from config import mysqlconfig, mongoconfig, fileconfig
 
 
 def arkstore(dbbackup=None, config=None, db_targets=None, dest_dir=None):
     '''The entry point of the script.
     '''
-    print "Backup started"
+    logger.info("Backup Started")
     if dbbackup is None or config is None:
         raise Exception("dbbackup and/or config should not be None.")
     temp_dir = None
@@ -23,7 +25,7 @@ def arkstore(dbbackup=None, config=None, db_targets=None, dest_dir=None):
         temp_dir = tempfile.mkdtemp()
     try:
         for target in db_targets:
-            print target['database'], "backup started"
+            logger.info("{db} backup started".format(db=target['database']))
             target['config'] = config
             cols = dbbackup.get_target_collections(target=target)
             for col in cols:
@@ -36,15 +38,22 @@ def arkstore(dbbackup=None, config=None, db_targets=None, dest_dir=None):
                 abszipfn = dbbackup.zip_db_dump(dbname=dbname, date_stamp=date_stamp, temp_dir=temp_dir)
                 dbbackup.write_to_output(dbname=dbname, dest_dir=dest_dir, abszipfn=abszipfn)
     except StandardError as err:
-        print  >> sys.stderr, str(err)
+        logger.error(str(err))
+        #print  >> sys.stderr, str(err)
         return 1
     finally:
         if not isinstance(dbbackup, FileArk):
             shutil.rmtree(temp_dir)
-    print "Backup finished"
+    logger.info("Backup finished")
 
 
-def run(type):
+def arkrestore():
+    '''The entry point of the script.
+    '''
+    logger.info("Restore Started")
+
+
+def run(operation, type):
     '''Run backup service with specified type
     :param type: Options -> mysql, mongo, file
     '''
@@ -57,14 +66,19 @@ def run(type):
 
     # Create destination directory if it does not exist
     ArkUtil.createPath(dest_dir)
-    # start backup
-    dbbackup = backup_type[type](host=config[type].DB_HOST, port=config[type].DB_PORT)
-    sys.exit(arkstore(dbbackup=dbbackup, config=config[type], db_targets=db_targets, dest_dir=dest_dir))
+    if operation == "backup":
+        # start backup
+        dbbackup = backup_type[type](host=config[type].DB_HOST, port=config[type].DB_PORT)
+        sys.exit(arkstore(dbbackup=dbbackup, config=config[type], db_targets=db_targets, dest_dir=dest_dir))
+    else:
+        print operation
+        pass
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Backup script')
-    parser.add_argument('-t','--type', help='Type of backup required, Options: mysql or mongo or file',required=True)
+    parser = argparse.ArgumentParser(description='Backup & Restore script')
+    parser.add_argument('-o','--operation', help='which operation to start, Options: backup or restore', required=True)
+    parser.add_argument('-t','--type', help='Type of backup required, Options: mysql or mongo or file', required=True)
     args = parser.parse_args()
 
-    run(args.type)
+    run(args.operation, args.type)
