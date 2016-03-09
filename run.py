@@ -7,12 +7,16 @@ from arkutil import ArkUtil
 from loggerd import logger
 from config import mysqlconfig, mongoconfig, fileconfig
 
-if mysqlconfig.IS_RDB_ENABLED:
+operation_type = {}
+if mysqlconfig.IS_ENABLED:
     from arkrdb.mysql import MySQLArk
-if fileconfig.IS_FILE_ENABLED:
-    from arkfile.file import FileArk
-if mongoconfig.IS_NDB_ENABLED:
+    operation_type['mysql'] = MySQLArk
+if mongoconfig.IS_ENABLED:
     from arkndb.mongo import MongoArk
+    operation_type['mongo'] = MongoArk
+if fileconfig.IS_ENABLED:
+    from arkfile.file import FileArk
+    operation_type['file'] = FileArk
 
 
 def arkstore(dbbackup=None, config=None, db_targets=None, dest_dir=None):
@@ -64,7 +68,7 @@ def run(operation, type):
     :param type: Options -> mysql, mongo, file
     '''
     # create required disctionary structures
-    operation_type = {'mysql': MySQLArk, 'mongo': MongoArk, 'file': FileArk}
+    #operation_type = {'mysql': MySQLArk, 'mongo': MongoArk, 'file': FileArk}
     config = {'mysql': mysqlconfig, 'mongo': mongoconfig, 'file': fileconfig}
     # get required configurations
     db_targets = config[type].DB_TARGETS
@@ -72,15 +76,16 @@ def run(operation, type):
 
     # Create destination directory if it does not exist
     ArkUtil.createPath(dest_dir)
-    if operation == "backup":
+    if operation == "backup" and config[type].IS_ENABLED:
         # start backup
         dbbackup = operation_type[type](host=config[type].DB_HOST, port=config[type].DB_PORT)
         sys.exit(arkstore(dbbackup=dbbackup, config=config[type], db_targets=db_targets, dest_dir=dest_dir))
     else:
         # start restore
-        dbrestore = operation_type[type](host=config[type].DB_HOST, port=config[type].DB_PORT)
-        sys.exit(arkrestore(dbrestore=dbrestore, config=config[type], db_targets=db_targets, source_dir=dest_dir))
         pass
+        #dbrestore = operation_type[type](host=config[type].DB_HOST, port=config[type].DB_PORT)
+        #sys.exit(arkrestore(dbrestore=dbrestore, config=config[type], db_targets=db_targets, source_dir=dest_dir))
+        #pass
 
 
 if __name__ == '__main__':
