@@ -24,7 +24,7 @@ class MongoArk(Ark):
         elif isinstance(collection, str):
             collection = collection.split(",")
         else:
-            # Not sure what to do
+            # Not sure what to do :)
             pass
 
         ignore = lambda col: col.startswith(tuple(target['ignore_startswith'])) or col in target['ignore']
