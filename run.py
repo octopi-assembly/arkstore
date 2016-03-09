@@ -3,12 +3,16 @@ import shutil
 import sys, traceback
 import tempfile
 
-from arkrdb.mysql import MySQLArk
-from arkfile.file import FileArk
-from arkndb.mongo import MongoArk
 from arkutil import ArkUtil
 from loggerd import logger
 from config import mysqlconfig, mongoconfig, fileconfig
+
+if mysqlconfig.IS_RDB_ENABLED:
+    from arkrdb.mysql import MySQLArk
+if fileconfig.IS_FILE_ENABLED:
+    from arkfile.file import FileArk
+if mongoconfig.IS_NDB_ENABLED:
+    from arkndb.mongo import MongoArk
 
 
 def arkstore(dbbackup=None, config=None, db_targets=None, dest_dir=None):
