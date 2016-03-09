@@ -47,10 +47,12 @@ def arkstore(dbbackup=None, config=None, db_targets=None, dest_dir=None):
     logger.info("Backup finished")
 
 
-def arkrestore():
+def arkrestore(dbrestore=None, config=None, db_targets=None, source_dir=None):
     '''The entry point of the script.
     '''
     logger.info("Restore Started")
+    if dbrestore is None or config is None:
+        raise Exception("dbrestore and/or config should not be None.")
 
 
 def run(operation, type):
@@ -58,7 +60,7 @@ def run(operation, type):
     :param type: Options -> mysql, mongo, file
     '''
     # create required disctionary structures
-    backup_type = {'mysql': MySQLArk, 'mongo': MongoArk, 'file': FileArk}
+    operation_type = {'mysql': MySQLArk, 'mongo': MongoArk, 'file': FileArk}
     config = {'mysql': mysqlconfig, 'mongo': mongoconfig, 'file': fileconfig}
     # get required configurations
     db_targets = config[type].DB_TARGETS
@@ -68,10 +70,12 @@ def run(operation, type):
     ArkUtil.createPath(dest_dir)
     if operation == "backup":
         # start backup
-        dbbackup = backup_type[type](host=config[type].DB_HOST, port=config[type].DB_PORT)
+        dbbackup = operation_type[type](host=config[type].DB_HOST, port=config[type].DB_PORT)
         sys.exit(arkstore(dbbackup=dbbackup, config=config[type], db_targets=db_targets, dest_dir=dest_dir))
     else:
-        print operation
+        # start restore
+        dbrestore = operation_type[type](host=config[type].DB_HOST, port=config[type].DB_PORT)
+        sys.exit(arkrestore(dbrestore=dbrestore, config=config[type], db_targets=db_targets, source_dir=dest_dir))
         pass
 
 
