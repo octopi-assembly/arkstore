@@ -17,7 +17,6 @@ class MySQLArk(Ark):
         # Execute the SQL query and get the collection
         collection = mysql(h=self.host, port=self.port, u=target['login'], password=target['password'],
                            D=target['database'], execute="SHOW TABLES", N=True)
-
         ignore = lambda col: (col.startswith(tuple(target['ignore_startswith'])) or col in target['ignore'])
         return [str(col).strip() for col in collection if not ignore(col)]
 

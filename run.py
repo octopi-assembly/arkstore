@@ -1,6 +1,6 @@
 import argparse
 import shutil
-import sys
+import sys, traceback
 import tempfile
 
 from arkrdb.mysql import MySQLArk
@@ -26,8 +26,8 @@ def arkstore(dbbackup=None, config=None, db_targets=None, dest_dir=None):
         for target in db_targets:
             logger.info("{db} backup started".format(db=target['database']))
             target['config'] = config
-            cols = dbbackup.get_target_collections(target=target)
-            for col in cols:
+            collection = dbbackup.get_target_collections(target=target)
+            for col in collection:
                 dbbackup.dump_collection(target=target, collection=col, temp_dir=temp_dir)
                 if isinstance(dbbackup, MySQLArk):
                     dbbackup.dump_structure(target=target, collection=col, temp_dir=temp_dir)
@@ -37,8 +37,9 @@ def arkstore(dbbackup=None, config=None, db_targets=None, dest_dir=None):
                 abszipfn = dbbackup.zip_db_dump(dbname=dbname, date_stamp=date_stamp, temp_dir=temp_dir)
                 dbbackup.write_to_output(dbname=dbname, dest_dir=dest_dir, abszipfn=abszipfn)
     except StandardError as err:
-        logger.error(str(err))
-        #print  >> sys.stderr, str(err)
+        #logger.error(str(err))
+        #traceback.print_exc(file=sys.stdout)
+        logger.exception("message")
         return 1
     finally:
         if not isinstance(dbbackup, FileArk):
