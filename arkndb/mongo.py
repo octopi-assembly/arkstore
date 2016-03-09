@@ -18,8 +18,14 @@ class MongoArk(Ark):
         '''
         collection = mongo(target['database'], host=self.host, port=self.port, u=target['login'], p=target['password'],
               eval="db.getCollectionNames()", quiet=True)
-        for item in collection:
-            collection = ast.literal_eval(item) if isinstance(item, unicode) or isinstance(item, str) else item
+
+        if isinstance(collection, unicode):
+            collection = ast.literal_eval(collection)
+        elif isinstance(collection, str):
+            collection = collection.split(",")
+        else:
+            # Not sure what to do
+            pass
 
         ignore = lambda col: col.startswith(tuple(target['ignore_startswith'])) or col in target['ignore']
         return [str(col).strip() for col in collection if not ignore(col)]
