@@ -14,6 +14,7 @@ This backup script uses sh and shutil to take backup of sql, nosql and files.
 
 ### Pending Stuff ###
 * Backup Restore
+* Storing backup on sloud storage services like DropBox, Box, Drive, One
 * Adding other SQL engines like Postgres SQL, Oracle, MS SQL, IBM DB2, IBM Informix, Teradata
 * Adding other NoSQL engines like Redis, Memcached, Terrastore, Neo4j [This list may not be done]
 
