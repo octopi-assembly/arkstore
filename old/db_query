@@ -1,2 +1,0 @@
-# Run these commands inside each individual database.
-db.createUser({ user: "root", pwd: "root", roles: [{role: "userAdminAnyDatabase", db: "admin"}]});
